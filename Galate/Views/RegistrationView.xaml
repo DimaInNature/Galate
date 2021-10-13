@@ -1,0 +1,117 @@
+﻿<Window
+    x:Class="Galate.Views.RegistrationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Galate.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Galate.ViewModels"
+    x:Name="ThisWindow"
+    Title="Регистрация"
+    Width="400"
+    Height="450"
+    Background="#0095B6"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.DataContext>
+        <vm:RegistrationViewModel />
+    </Window.DataContext>
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Border
+            Grid.Row="0"
+            Grid.RowSpan="4"
+            Grid.ColumnSpan="4"
+            Background="#ECEABE">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" Color="#FF0098B9" />
+            </Border.Effect>
+        </Border>
+
+        <Label
+            Grid.ColumnSpan="2"
+            Margin="49,37,0,41"
+            HorizontalAlignment="Left"
+            Content="Регистрация"
+            Foreground="#FF0B6E9C" />
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.RowSpan="4"
+            Grid.ColumnSpan="4"
+            VerticalAlignment="Center">
+
+            <Label Content="Имя" Foreground="#FF0B6E9C" />
+
+            <TextBox x:Name="UserNameTextBox" Text="{Binding Name}" />
+
+            <Label Content="Фамилия" Foreground="#FF0B6E9C" />
+
+            <TextBox x:Name="UserSurnameTextBox" Text="{Binding Surname}" />
+
+            <Label Content="Email" Foreground="#FF0B6E9C" />
+
+            <TextBox x:Name="UserMailTextBox" Text="{Binding Mail}" />
+
+            <Label Content="Логин" Foreground="#FF0B6E9C" />
+
+            <TextBox x:Name="UserLoginTextBox" Text="{Binding Login}" />
+
+            <Label Content="Пароль" Foreground="#FF0B6E9C" />
+
+            <PasswordBox x:Name="UserPasswordBox" PasswordChanged="UserPasswordBox_PasswordChanged" />
+
+            <Button
+                Margin="0,10,0,0"
+                BorderBrush="#FF0B6E9C"
+                Command="{Binding RegistrationButtonClickCommand}"
+                CommandParameter="{Binding ElementName=ThisWindow}"
+                Content="Зарегистрироваться"
+                Foreground="#FF0B6E9C">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0.013" Color="#FF7DE7FF" />
+                        <GradientStop Offset="1" Color="#FFFFFACB" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
+            <Button
+                BorderBrush="#FF0B6E9C"
+                Command="{Binding BackButtonClickCommand}"
+                CommandParameter="{Binding ElementName=ThisWindow}"
+                Content="Назад"
+                Foreground="#FF0B6E9C">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0.013" Color="#FF7DE7FF" />
+                        <GradientStop Offset="1" Color="#FFFFFACB" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
+        </StackPanel>
+
+        <Image
+            Grid.ColumnSpan="2"
+            Margin="0,0,23,54"
+            Source="/Content/Img/BlueLogo.png" />
+    </Grid>
+
+</Window>

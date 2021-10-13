@@ -1,0 +1,1572 @@
+﻿<Window
+    x:Class="Galate.Views.AdminMainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Galate.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Galate.ViewModels"
+    x:Name="ThisWindow"
+    Title="Admin"
+    Width="800"
+    Height="450"
+    MouseLeftButtonDown="ThisWindow_MouseLeftButtonDown"
+    ResizeMode="NoResize"
+    WindowStyle="None"
+    mc:Ignorable="d">
+
+    <Window.DataContext>
+        <vm:AdminMainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!--#region Top-->
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" Source="/Content/Img/BlueLogo.png" />
+
+            <Button
+                Grid.Column="2"
+                Width="40"
+                Height="25"
+                Margin="0,0,50,0"
+                HorizontalAlignment="Right"
+                Command="{Binding LogoutButtonClickCommand}"
+                CommandParameter="{Binding ElementName=ThisWindow}"
+                Content="Выйти" />
+
+            <Button
+                Grid.Column="2"
+                Width="25"
+                Height="25"
+                Margin="0,0,10,0"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseApplicationButtonClickCommand}"
+                CommandParameter="{Binding ElementName=ThisWindow}"
+                Content="X" />
+
+        </Grid>
+
+        <!--#endregion-->
+
+        <!--#region Body-->
+
+        <Grid Grid.Row="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+
+            <!--#region Grid`s Area-->
+
+            <!--#region Create Air Travel Grid-->
+
+            <Grid x:Name="CreateAirTravelGrid" Grid.Row="0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Column="0"
+                    Width="50"
+                    Height="27"
+                    Margin="0,15,0,0"
+                    VerticalAlignment="Top"
+                    FontSize="20"
+                    Text="Туры" />
+
+                <ListBox
+                    Grid.Column="0"
+                    Margin="30,50,30,15"
+                    ItemsSource="{Binding Tours}"
+                    SelectedItem="{Binding CreateSelectedTour}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontSize="17"
+                                    Foreground="#454545"
+                                    Text="{Binding Path=TourName}" />
+
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontSize="17"
+                                    Foreground="#454545"
+                                    Text="{Binding Path=FormatPrice}" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+
+                <Calendar
+                    Grid.Column="1"
+                    Margin="15,50,15,0"
+                    IsHitTestVisible="False"
+                    SelectedDate="{Binding CreateSelectedTour.TourDate}" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    Width="43"
+                    Height="27"
+                    Margin="0,15,0,0"
+                    VerticalAlignment="Top"
+                    FontSize="20"
+                    Text="Дата" />
+
+                <Button
+                    Grid.Column="1"
+                    Width="100"
+                    Height="40"
+                    Margin="0,0,0,15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding CancelAirTravelButtonCommand}"
+                    Content="Отмена" />
+
+                <ListBox
+                    Grid.Column="2"
+                    Margin="30,50,30,85"
+                    ItemsSource="{Binding Clients}"
+                    SelectedItem="{Binding CreateSelectedClient}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid>
+
+                                <TextBlock
+                                    FontSize="15"
+                                    Foreground="#454545"
+                                    Text="{Binding Path=FullName}" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+
+                <TextBlock
+                    Grid.Column="2"
+                    Width="68"
+                    Height="27"
+                    Margin="0,15,0,0"
+                    VerticalAlignment="Top"
+                    FontSize="20"
+                    Text="Клиент" />
+
+                <Button
+                    Grid.Column="2"
+                    Width="100"
+                    Height="40"
+                    Margin="0,0,0,15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding CreateAirTravelButtonCommand}"
+                    Content="Создать" />
+
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CreateAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ViewAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ClientsRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ToursRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+            </Grid>
+
+            <!--#endregion-->
+
+            <!--#region View Air Travel Grid-->
+
+            <Grid x:Name="ViewAirTravelGrid" Grid.Row="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+
+                <ListBox
+                    Grid.Row="0"
+                    Margin="15,0,10,0"
+                    ItemsSource="{Binding AirTravels}"
+                    SelectedItem="{Binding ViewSelectedAirTravel}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontSize="17"
+                                    Foreground="#454545"
+                                    Text="{Binding Path=Tour.TourName}" />
+
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontSize="17"
+                                    Foreground="#454545"
+                                    Text="{Binding Path=Tour.FormatPrice}" />
+
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    FontSize="17"
+                                    Foreground="#454545"
+                                    Text="{Binding Path=Client.FullName}" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+
+                <Button
+                    Grid.Row="1"
+                    Width="100"
+                    Height="40"
+                    Command="{Binding DeleteAirTravelButtonCommand}"
+                    Content="Удалить" />
+
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CreateAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ViewAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ClientsRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ToursRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+            </Grid>
+
+            <!--#endregion-->
+
+            <!--#region Client`s Grid-->
+
+            <Grid x:Name="ClientsGrid" Grid.Row="0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <!--#region Left Menu-->
+
+                <Grid Grid.Column="0">
+
+                    <StackPanel>
+
+                        <RadioButton
+                            x:Name="CreateClientRadioButton"
+                            Grid.Column="0"
+                            Height="30"
+                            Margin="5"
+                            Content="Создать"
+                            IsChecked="True">
+
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="FontSize" Value="17" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                                    <Grid>
+
+                                                        <ContentPresenter
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Content="{TemplateBinding Content}" />
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+
+                                    </Setter>
+
+                                    <Style.Triggers>
+
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#FF0098B9" />
+                                            <Setter Property="Foreground" Value="Wheat" />
+                                        </Trigger>
+
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Background" Value="White" />
+                                            <Setter Property="Foreground" Value="#FF0098B9" />
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=ViewClientRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=DeleteClientRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+
+                                </Style>
+                            </RadioButton.Style>
+
+                        </RadioButton>
+
+                        <RadioButton
+                            x:Name="ViewClientRadioButton"
+                            Grid.Column="0"
+                            Height="30"
+                            Margin="5"
+                            Content="Просмотреть"
+                            IsChecked="False">
+
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="FontSize" Value="17" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                                    <Grid>
+
+                                                        <ContentPresenter
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Content="{TemplateBinding Content}" />
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+
+                                    </Setter>
+
+                                    <Style.Triggers>
+
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#FF0098B9" />
+                                            <Setter Property="Foreground" Value="Wheat" />
+                                        </Trigger>
+
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Background" Value="White" />
+                                            <Setter Property="Foreground" Value="#FF0098B9" />
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=CreateClientRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=DeleteClientRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+
+                                </Style>
+                            </RadioButton.Style>
+
+                        </RadioButton>
+
+                        <RadioButton
+                            x:Name="DeleteClientRadioButton"
+                            Grid.Column="0"
+                            Height="30"
+                            Margin="5"
+                            Content="Удалить"
+                            IsChecked="False">
+
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="FontSize" Value="17" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                                    <Grid>
+
+                                                        <ContentPresenter
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Content="{TemplateBinding Content}" />
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+
+                                    </Setter>
+
+                                    <Style.Triggers>
+
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#FF0098B9" />
+                                            <Setter Property="Foreground" Value="Wheat" />
+                                        </Trigger>
+
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Background" Value="White" />
+                                            <Setter Property="Foreground" Value="#FF0098B9" />
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=CreateClientRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=ViewClientRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+
+                                </Style>
+                            </RadioButton.Style>
+
+                        </RadioButton>
+
+                    </StackPanel>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <!--#region Create Grid-->
+
+                <Grid x:Name="CreateClientsGrid" Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Label
+                        Grid.Row="1"
+                        Margin="10,0,0,0"
+                        Content="Имя"
+                        Foreground="#FF0B6E9C" />
+
+                    <TextBox
+                        x:Name="CreateClientNameTextBox"
+                        Grid.Row="1"
+                        Width="150"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Text="{Binding CreateClientName}" />
+
+                    <Label
+                        Grid.Row="2"
+                        Margin="10,0,0,0"
+                        Content="Фамилия"
+                        Foreground="#FF0B6E9C" />
+
+                    <TextBox
+                        x:Name="CreateClientSurnameTextBox"
+                        Grid.Row="2"
+                        Width="150"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Text="{Binding CreateClientSurname}" />
+
+                    <Label
+                        Grid.Row="3"
+                        Margin="10,0,0,0"
+                        Content="Телефон"
+                        Foreground="#FF0B6E9C" />
+
+                    <TextBox
+                        x:Name="CreateClientPhoneTextBox"
+                        Grid.Row="3"
+                        Width="150"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Text="{Binding CreateClientPhone}" />
+
+                    <Button
+                        Grid.Row="4"
+                        Width="100"
+                        Height="40"
+                        Command="{Binding CreateClientsButtonCommand}"
+                        Content="Создать" />
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=CreateClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=DeleteClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <!--#region View Grid-->
+
+                <Grid
+                    x:Name="ViewClientsGrid"
+                    Grid.Column="1"
+                    IsHitTestVisible="False">
+
+                    <ListBox Grid.Row="0" ItemsSource="{Binding Clients}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=FullName}" />
+
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=Phone}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=CreateClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=DeleteClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <!--#region Delete Grid-->
+
+                <Grid x:Name="DeleteClientsGrid" Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+
+                    <ListBox
+                        Grid.Row="0"
+                        ItemsSource="{Binding Clients}"
+                        SelectedItem="{Binding DeleteSelectedClient}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=FullName}" />
+
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=Phone}" />
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <Button
+                        Grid.Row="1"
+                        Width="100"
+                        Height="40"
+                        Command="{Binding DeleteClientsButtonCommand}"
+                        Content="Удалить" />
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=CreateClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=DeleteClientRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CreateAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ViewAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ClientsRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ToursRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+            </Grid>
+
+            <!--#endregion-->
+
+            <!--#region Tours`s Grid-->
+
+            <Grid x:Name="ToursGrid" Grid.Row="0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <!--#region Left Menu-->
+
+                <Grid Grid.Column="0">
+
+                    <StackPanel>
+
+                        <RadioButton
+                            x:Name="CreateTourRadioButton"
+                            Grid.Column="0"
+                            Height="30"
+                            Margin="5"
+                            Content="Создать"
+                            IsChecked="True">
+
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="FontSize" Value="17" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                                    <Grid>
+
+                                                        <ContentPresenter
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Content="{TemplateBinding Content}" />
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+
+                                    </Setter>
+
+                                    <Style.Triggers>
+
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#FF0098B9" />
+                                            <Setter Property="Foreground" Value="Wheat" />
+                                        </Trigger>
+
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Background" Value="White" />
+                                            <Setter Property="Foreground" Value="#FF0098B9" />
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=ViewTourRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=DeleteTourRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+
+                                </Style>
+                            </RadioButton.Style>
+
+                        </RadioButton>
+
+                        <RadioButton
+                            x:Name="ViewTourRadioButton"
+                            Grid.Column="0"
+                            Height="30"
+                            Margin="5"
+                            Content="Просмотреть"
+                            IsChecked="False">
+
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="FontSize" Value="17" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                                    <Grid>
+
+                                                        <ContentPresenter
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Content="{TemplateBinding Content}" />
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+
+                                    </Setter>
+
+                                    <Style.Triggers>
+
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#FF0098B9" />
+                                            <Setter Property="Foreground" Value="Wheat" />
+                                        </Trigger>
+
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Background" Value="White" />
+                                            <Setter Property="Foreground" Value="#FF0098B9" />
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=CreateTourRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=DeleteTourRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+
+                                </Style>
+                            </RadioButton.Style>
+
+                        </RadioButton>
+
+                        <RadioButton
+                            x:Name="DeleteTourRadioButton"
+                            Grid.Column="0"
+                            Height="30"
+                            Margin="5"
+                            Content="Удалить"
+                            IsChecked="False">
+
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="FontSize" Value="17" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="FontSize" Value="15" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                                    <Grid>
+
+                                                        <ContentPresenter
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Content="{TemplateBinding Content}" />
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+
+                                    </Setter>
+
+                                    <Style.Triggers>
+
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="#FF0098B9" />
+                                            <Setter Property="Foreground" Value="Wheat" />
+                                        </Trigger>
+
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Background" Value="White" />
+                                            <Setter Property="Foreground" Value="#FF0098B9" />
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=CreateTourRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=ViewTourRadioButton, Path=IsChecked}" Value="true">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+
+                                </Style>
+                            </RadioButton.Style>
+
+                        </RadioButton>
+
+                    </StackPanel>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <!--#region Create Grid-->
+
+                <Grid x:Name="CreateToursGrid" Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Label
+                        Grid.Row="1"
+                        Margin="10,0,0,0"
+                        Content="Город отбытия"
+                        Foreground="#FF0B6E9C" />
+
+                    <TextBox
+                        x:Name="CreateTourFromCityTextBox"
+                        Grid.Row="1"
+                        Width="150"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Text="{Binding CreateTourFromCity}" />
+
+                    <Label
+                        Grid.Row="2"
+                        Margin="10,0,0,0"
+                        Content="Город прибытия"
+                        Foreground="#FF0B6E9C" />
+
+                    <TextBox
+                        x:Name="CreateTourToCityTextBox"
+                        Grid.Row="2"
+                        Width="150"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Text="{Binding CreateTourToCity}" />
+
+                    <Label
+                        Grid.Row="3"
+                        Margin="10,0,0,0"
+                        Content="Стоимость"
+                        Foreground="#FF0B6E9C" />
+
+                    <TextBox
+                        Grid.Row="3"
+                        Width="150"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Text="{Binding CreateTourPrice}" />
+
+                    <Label
+                        Grid.Row="1"
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Center"
+                        Content="Дата тура"
+                        Foreground="#FF0B6E9C" />
+
+                    <Calendar
+                        x:Name="CreateTourCalendat"
+                        Grid.Row="1"
+                        Grid.RowSpan="4"
+                        Margin="15,0,10,65"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        PreviewMouseUp="CreateTourCalendat_PreviewMouseUp"
+                        SelectedDate="{Binding CreateTourDate}" />
+
+                    <Button
+                        Grid.Row="4"
+                        Width="100"
+                        Height="40"
+                        Command="{Binding CreateTourButtonCommand}"
+                        Content="Создать" />
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=CreateTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=DeleteTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <!--#region View Grid-->
+
+                <Grid x:Name="ViewToursGrid" Grid.Column="1">
+
+                    <ListBox
+                        Grid.Row="0"
+                        IsHitTestVisible="False"
+                        ItemsSource="{Binding Tours}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=TourName}" />
+
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=StringTourDate}" />
+
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=FormatPrice}" />
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=CreateTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=DeleteTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <!--#region Delete Grid-->
+
+                <Grid x:Name="DeleteToursGrid" Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+
+                    <ListBox
+                        Grid.Row="0"
+                        ItemsSource="{Binding Tours}"
+                        SelectedItem="{Binding DeleteSelectedTour}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=TourName}" />
+
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=StringTourDate}" />
+
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        FontSize="17"
+                                        Foreground="#454545"
+                                        Text="{Binding Path=FormatPrice}" />
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <Button
+                        Grid.Row="1"
+                        Width="100"
+                        Height="40"
+                        Command="{Binding DeleteTourButtonCommand}"
+                        Content="Удалить" />
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=CreateTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=DeleteTourRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                </Grid>
+
+                <!--#endregion-->
+
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CreateAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ViewAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ClientsRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=ToursRadioButton, Path=IsChecked}" Value="true">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+            </Grid>
+
+            <!--#endregion-->
+
+            <!--#endregion-->
+
+            <!--#region RadioButton`s Area-->
+
+            <Grid Grid.Row="1">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <RadioButton
+                    x:Name="CreateAirTravelRadioButton"
+                    Grid.Column="0"
+                    Margin="5"
+                    Content="Добавить поездку"
+                    IsChecked="True">
+
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="FontSize" Value="17" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RadioButton">
+
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                            <Grid>
+
+                                                <ContentPresenter
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Content="{TemplateBinding Content}" />
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </ControlTemplate>
+
+                                </Setter.Value>
+
+                            </Setter>
+
+                            <Style.Triggers>
+
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#FF0098B9" />
+                                    <Setter Property="Foreground" Value="Wheat" />
+                                </Trigger>
+
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="#FF0098B9" />
+                                </Trigger>
+
+                                <DataTrigger Binding="{Binding ElementName=ViewAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ClientsRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ToursRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+
+                            </Style.Triggers>
+
+                        </Style>
+                    </RadioButton.Style>
+
+                </RadioButton>
+
+                <RadioButton
+                    x:Name="ViewAirTravelRadioButton"
+                    Grid.Column="1"
+                    Margin="5"
+                    Content="Активные поездки"
+                    IsChecked="False">
+
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="FontSize" Value="17" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RadioButton">
+
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                            <Grid>
+
+                                                <ContentPresenter
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Content="{TemplateBinding Content}" />
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </ControlTemplate>
+
+                                </Setter.Value>
+
+                            </Setter>
+
+                            <Style.Triggers>
+
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#FF0098B9" />
+                                    <Setter Property="Foreground" Value="Wheat" />
+                                </Trigger>
+
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="#FF0098B9" />
+                                </Trigger>
+
+                                <DataTrigger Binding="{Binding ElementName=CreateAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ClientsRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ToursRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+
+                            </Style.Triggers>
+
+                        </Style>
+                    </RadioButton.Style>
+
+                </RadioButton>
+
+                <RadioButton
+                    x:Name="ClientsRadioButton"
+                    Grid.Column="2"
+                    Margin="5"
+                    Content="Клиенты"
+                    IsChecked="False">
+
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="FontSize" Value="17" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RadioButton">
+
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                            <Grid>
+
+                                                <ContentPresenter
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Content="{TemplateBinding Content}" />
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </ControlTemplate>
+
+                                </Setter.Value>
+
+                            </Setter>
+
+                            <Style.Triggers>
+
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#FF0098B9" />
+                                    <Setter Property="Foreground" Value="Wheat" />
+                                </Trigger>
+
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="#FF0098B9" />
+                                </Trigger>
+
+                                <DataTrigger Binding="{Binding ElementName=CreateAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ToursRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+
+                            </Style.Triggers>
+
+                        </Style>
+                    </RadioButton.Style>
+
+                </RadioButton>
+
+                <RadioButton
+                    x:Name="ToursRadioButton"
+                    Grid.Column="3"
+                    Margin="5"
+                    Content="Туры"
+                    IsChecked="False">
+
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="FontSize" Value="17" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RadioButton">
+
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+
+                                            <Grid>
+
+                                                <ContentPresenter
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Content="{TemplateBinding Content}" />
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </ControlTemplate>
+
+                                </Setter.Value>
+
+                            </Setter>
+
+                            <Style.Triggers>
+
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#FF0098B9" />
+                                    <Setter Property="Foreground" Value="Wheat" />
+                                </Trigger>
+
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Foreground" Value="#FF0098B9" />
+                                </Trigger>
+
+                                <DataTrigger Binding="{Binding ElementName=CreateAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewAirTravelRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ViewClientsRadioButton, Path=IsChecked}" Value="true">
+                                    <Setter Property="IsChecked" Value="False" />
+                                </DataTrigger>
+
+                            </Style.Triggers>
+
+                        </Style>
+                    </RadioButton.Style>
+
+                </RadioButton>
+
+            </Grid>
+
+            <!--#endregion-->
+
+        </Grid>
+
+        <!--#endregion-->
+
+    </Grid>
+
+</Window>
