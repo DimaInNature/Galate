@@ -1,11 +1,11 @@
-# Информационная система "Galate"
-"Galate" - информационная система, задача которой упростить работникам аэропорта запись клиентов на ближайший авиарейс.
-В системе две роли пользователей: 
-1) Сотрудник, который может создавать/удалять клиентов;
-2) Админ, который может все то же, что и сотрудник + создание и удаление туров.
+# Information system "Galate"
+"Galate" is an information system whose task is to simplify the registration of customers for the nearest flight for airport employees.
+There are two user roles in the system:
+1) An employee who can create/delete clients;
+2) An admin who can do everything the same as an employee, as well as create and delete tours.
 
-В ходе разработки был использован стек технологий:
-WPF (MVVM), СУБД MySQL
+During the development, a stack of technologies was used:
+WPF (MVVM), MySQL DBMS
 
-Frontend был выполнен не мной.
-Backend делал только я.
+Frontend was not executed by me.
+The backend was done only by me.
